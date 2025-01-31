@@ -6,6 +6,7 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [checkBox, setCheckBox] = useState(false);
+    const [errors, setErrors] = useState([]);
     const history = useHistory();
 
     const handlePasswordChange = (event) => {
@@ -22,10 +23,28 @@ export default function Login() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (isFormValid) {
-            history.push('/success');
+        setErrors([]);
+        const validationErrors = [];
+
+        if (!isEmailValid(email)) {
+            validationErrors.push('Geçersiz email formatı');
         }
-    };
+
+        if (!isPasswordValid(password)) {
+            validationErrors.push('Şifre geçersiz');
+        }
+
+        if (!checkBox) {
+            validationErrors.push('Şartları kabul etmeniz gerekiyor');
+        }
+
+        if (validationErrors.length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        history.push('/success');
+    }
 
     const isEmailValid = (email) => {
         const emailRegex = /^[a-zA-Z0-9._]+@[a-z0-9]+\.(com|net|co)$/;
