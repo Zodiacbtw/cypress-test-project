@@ -1,3 +1,9 @@
+#root {
+    margin: 0 auto;
+    text-align: center;
+    box-sizing: border-box;
+}
+
 #form {
     display: flex;
     flex-direction: column;
@@ -7,4 +13,20 @@
 .lbl {
     display: flex;
     gap: 10px;
+}
+
+#button {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#button.disabled {
+    background-color: seagreen;
+    color: lightgray;
+    cursor: not-allowed;
+}
+
+#button.enabled {
+    background-color: green;
+    color: white;
 }

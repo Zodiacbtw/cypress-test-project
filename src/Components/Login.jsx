@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './Login.css';
+import { useHistory } from 'react-router';
 
 export default function Login() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [checkBox, setCheckBox] = useState(false);
+    const history = useHistory();
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
@@ -12,20 +14,18 @@ export default function Login() {
 
     const handleCheckBoxChange = () => {
         setCheckBox(!checkBox);
-    }
+    };
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value)
-    }
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(
-            "Email:", email,
-            "Şifre:", password,
-            "Koşul:", checkBox, 
-        )
-    }
+        if (isFormValid) {
+            history.push('/success');
+        }
+    };
 
     const isEmailValid = (email) => {
         const emailRegex = /^[a-zA-Z0-9._]+@[a-z0-9]+\.(com|net|co)$/;
@@ -37,12 +37,11 @@ export default function Login() {
         return passwordRegex.test(password);
     }
 
-    const isFormValid = isEmailValid && isPasswordValid && checkBox;
-    console.log(isFormValid);
+    const isFormValid = isEmailValid(email) && isPasswordValid(password) && checkBox;
 
 
     return (
-        <>
+        <div id='login-wrapper'>
             <form id='form'>
                 <label className='lbl' htmlFor="email">Email:
                     <input 
@@ -75,13 +74,15 @@ export default function Login() {
                     />
                 </label>
 
-                <button
-                    type='submit'
-                    disabled={!isFormValid}
-                    >
-                    Gönder
+                <button 
+                    id='button' 
+                    type='submit' 
+                    disabled={!isFormValid} 
+                    onClick={handleSubmit}
+                    className={(isFormValid) ? "enabled" : "disabled"}>
+                    Giriş Yap
                 </button>
             </form>
-        </>
+        </div>
     )
 }
